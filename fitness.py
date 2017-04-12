@@ -1,3 +1,4 @@
+import random 
 import numpy as np 
 import pandas as pd 
 import sklearn
@@ -19,7 +20,8 @@ class Fitness:
     def evaluate(self, individual):
 
         model = individual.createNetwork()
-
+        
+        random.seed(42) 
         # perform KFold crossvalidation 
         kf = KFold(len(self.X), n_folds=5)
         scores = []
