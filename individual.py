@@ -9,7 +9,7 @@ NOUTPUTS = 1
 MAX_LAYERS = 3
 MAX_LAYER_SIZE = 20
 MIN_LAYER_SIZE = 10 
-DROPOUT = [ 0.1, 0.2, 0.3, 0.4 ] 
+DROPOUT = [ 0.0, 0.2, 0.3, 0.4 ] 
 ACTIVATIONS = [ 'relu', 'tanh', 'sigmoid', 'hard_sigmoid', 'linear' ] 
 
 class Layer:
@@ -53,7 +53,8 @@ class Individual:
             else:
                 model.add(Dense(l.size))
             model.add(Activation(l.activation))
-            model.add(Dropout(l.dropout))
+            if l.dropout > 0:
+                model.add(Dropout(l.dropout))
         model.add(Dense(self.noutputs)) 
             
         model.compile(loss='mean_squared_error',
