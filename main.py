@@ -2,7 +2,7 @@ import sys
 import array
 import random
 import pickle
-import numpy
+import numpy as np
 import multiprocessing 
 
 from deap import algorithms
@@ -56,10 +56,10 @@ def main(id, checkpoint_name=None):
         logbook = tools.Logbook()
     
     stats = tools.Statistics(lambda ind: ind.fitness.values)
-    stats.register("avg", numpy.mean)
-    stats.register("std", numpy.std)
-    stats.register("min", numpy.min)
-    stats.register("max", numpy.max)
+    stats.register("avg", np.mean)
+    stats.register("std", np.std)
+    stats.register("min", np.min)
+    stats.register("max", np.max)
     
     pop, log = alg.myEASimple(pop, start_gen, toolbox, cxpb=0.6, mutpb=0.2, ngen=10, 
                               stats=stats, halloffame=hof, logbook=logbook, verbose=True,
@@ -87,16 +87,29 @@ if __name__ == "__main__":
     X_train, y_train = load_data("data/CO-nrm-part1.train.csv")
     X_test, y_test = load_data("data/CO-nrm-part1.test.csv")
 
-    network.fit(X_train, y_train,
-                batch_size=100, epochs=500, verbose=0)
+    E_train, E_test = [], []  
+    for _ in range(10):
+        network.fit(X_train, y_train,
+                    batch_size=100, epochs=500, verbose=0)
 
-    yy_train = network.predict(X_train)
-    diff = y_train - yy_train
-    E = 100 * sum(diff*diff) / len(yy_train)
-    print("E_train =", E)
+        yy_train = network.predict(X_train)
+        diff = y_train - yy_train
+        E = 100 * sum(diff*diff) / len(yy_train)
+        E_train.append(E) 
+        
+        yy_test = network.predict(X_test)
+        diff = y_test - yy_test
+        E = 100 * sum(diff * diff) / len(yy_test)
+        E_test.append(E) 
+
+    def print_stat(E, name):
+        print("E_{:6} avg={:.3f} std={:.3f} min={:.3f} max={:.3f}".format(name,
+                                                                          np.mean(E),
+                                                                          np.std(E),
+                                                                          np.min(E),
+                                                                          np.max(E)))
+        
+    print_stat(E_train, "train")
+    print_stat(E_test, "test")
+
     
-    yy_test = network.predict(X_test)
-    diff = y_test - yy_test
-    E = 100 * sum(diff * diff) / len(yy_test)
-    print("E_test =", E)
-                  
