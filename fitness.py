@@ -13,8 +13,6 @@ class Fitness:
 
     def evaluate(self, individual):
 
-        model = individual.createNetwork()
-        
         random.seed(42) 
         # perform KFold crossvalidation 
         kf = KFold(len(self.X), n_folds=5)
@@ -23,6 +21,7 @@ class Fitness:
             X_train, X_test = self.X[train], self.X[test]
             y_train, y_test = self.y[train], self.y[test]
                 
+            model = individual.createNetwork()
             model.fit(X_train, y_train,
                       batch_size=100, epochs=500, verbose=0)
             
