@@ -23,7 +23,10 @@ class Layer:
         self.size = random.randint(MIN_LAYER_SIZE, MAX_LAYER_SIZE)
         self.dropout = random.choice(DROPOUT) 
         self.activation = random.choice(ACTIVATIONS)  
-        return self 
+        return self
+
+    def __str__(self):
+        return " #{} dropout={} activation={}".format(self.size, self.dropout, self.activation)
 
 
 class Individual:
@@ -62,6 +65,14 @@ class Individual:
         
         return model 
 
+    def __str__(self):
+
+        ret = "------------------------\n"
+        for l in self.layers:
+            ret += str(l)
+            ret += "\n" 
+            ret += "------------------------\n"
+        return ret 
 
 def initIndividual(indclass):
     ind = indclass()
