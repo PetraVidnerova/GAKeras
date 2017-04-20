@@ -14,7 +14,8 @@ from individual import Individual, initIndividual
 from fitness import Fitness
 from mutation import Mutation 
 from crossover import Crossover
-import alg 
+import alg
+from dataset import load_data
 
 creator.create("FitnessMax", base.Fitness, weights=(-1.0,))
 creator.create("Individual", Individual, fitness=creator.FitnessMax)
@@ -37,14 +38,14 @@ toolbox.register("mate", cross.cxOnePoint)
 toolbox.register("mutate", mut.mutate)
 toolbox.register("select", tools.selTournament, tournsize=3)
 
-def main(checkpoint_name=None):
+def main(id, checkpoint_name=None):
     # random.seed(64)
 
     if checkpoint_name:
         # A file name has been given, then load the data from the file
         cp = pickle.load(open(checkpoint_name, "rb"))
         pop = cp["population"]
-        start_gen = cp["generation"]
+        start_gen = cp["generation"] + 1
         hof = cp["halloffame"]
         logbook = cp["logbook"]
         random.setstate(cp["rndstate"])
@@ -61,20 +62,41 @@ def main(checkpoint_name=None):
     stats.register("max", numpy.max)
     
     pop, log = alg.myEASimple(pop, start_gen, toolbox, cxpb=0.6, mutpb=0.2, ngen=10, 
-                              stats=stats, halloffame=hof, logbook=logbook, verbose=True)
+                              stats=stats, halloffame=hof, logbook=logbook, verbose=True,
+                              id=id)
 
     return pop, log, hof
 
 
 if __name__ == "__main__":
 
+     
     # first command line argument (if present) is the name
     # of the checkpoint file 
-    if len(sys.argv) > 1:
-        pop, log, hof = main(sys.argv[1])
+    if len(sys.argv) > 2:
+        pop, log, hof = main(sys.argv[1], sys.argv[2])
     else:
-        pop, log, hof = main()
+        pop, log, hof = main(sys.argv[1])
     
     network = hof[0].createNetwork()
     network.summary()
+    print( hof[0] )
     print( hof[0].fitness )
+
+    # learn on the whole set 
+    X_train, y_train = load_data("data/CO-nrm-part1.train.csv")
+    X_test, y_test = load_data("data/CO-nrm-part1.test.csv")
+
+    network.fit(X_train, y_train,
+                batch_size=100, epochs=500, verbose=0)
+
+    yy_train = network.predict(X_train)
+    diff = y_train - yy_train
+    E = 100 * sum(diff*diff) / len(yy_train)
+    print("E_train =", E)
+    
+    yy_test = network.predict(X_test)
+    diff = y_test - yy_test
+    E = 100 * sum(diff * diff) / len(yy_test)
+    print("E_test =", E)
+                  
