@@ -87,27 +87,34 @@ if __name__ == "__main__":
     X_train, y_train = load_data("data/CO-nrm-part1.train.csv")
     X_test, y_test = load_data("data/CO-nrm-part1.test.csv")
 
+    def mean_sq_error(y1, y2):
+        diff = y1 - y2
+        E = 100 * sum(diff*diff) / len(y1)
+        return E
+    
     E_train, E_test = [], []  
     for _ in range(10):
+        network = hof[0].createNetwork() 
         network.fit(X_train, y_train,
                     batch_size=100, epochs=500, verbose=0)
 
         yy_train = network.predict(X_train)
-        diff = y_train - yy_train
-        E = 100 * sum(diff*diff) / len(yy_train)
-        E_train.append(E) 
+        E_train.append(mean_sq_error(yy_train, y_train)) 
         
         yy_test = network.predict(X_test)
-        diff = y_test - yy_test
-        E = 100 * sum(diff * diff) / len(yy_test)
-        E_test.append(E) 
+        E_test.append(mean_sq_error(yy_test, y_test))
 
+        #for train, test in zip(E_train, E_test):
+        # print(train, test)
+        # print("{:.3f} {:.3f}".format(train, test))
+
+        
     def print_stat(E, name):
-        print("E_{:6} avg={:.3f} std={:.3f} min={:.3f} max={:.3f}".format(name,
-                                                                          np.mean(E),
-                                                                          np.std(E),
-                                                                          np.min(E),
-                                                                          np.max(E)))
+        print("E_{:6} avg={:.3f} std={:.3f}  min={:.3f} max={:.3f}".format(name,
+                                                                           np.mean(E),
+                                                                           np.std(E),
+                                                                           np.min(E),
+                                                                           np.max(E)))
         
     print_stat(E_train, "train")
     print_stat(E_test, "test")
