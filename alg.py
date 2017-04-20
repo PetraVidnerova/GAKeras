@@ -5,7 +5,7 @@ from deap import algorithms
 
 
 def myEASimple(population, start_gen, toolbox, cxpb, mutpb, ngen, 
-               stats, halloffame, logbook, verbose):
+               stats, halloffame, logbook, verbose, id=None):
 
     for gen in range(start_gen, ngen):
         population = algorithms.varAnd(population, toolbox, cxpb=cxpb, mutpb=mutpb)
@@ -29,6 +29,10 @@ def myEASimple(population, start_gen, toolbox, cxpb, mutpb, ngen,
             # Fill the dictionary using the dict(key=value[, ...]) constructor
             cp = dict(population=population, generation=gen, halloffame=halloffame,
                       logbook=logbook, rndstate=random.getstate())
-            pickle.dump(cp, open("checkpoint_ea.pkl", "wb"))
+            if id is None:
+                cp_name = "checkpoint_ea.pkl"
+            else:
+                cp_name = "checkpoint_ea_{}.pkl".format(id)
+            pickle.dump(cp, open(cp_name, "wb"))
 
     return population, logbook
