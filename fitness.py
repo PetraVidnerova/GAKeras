@@ -1,21 +1,15 @@
 import random 
 import numpy as np 
-import pandas as pd 
 import sklearn
 from sklearn.cross_validation import KFold
+from dataset import load_data
 
 class Fitness:
 
     def __init__(self, train_name):
         
         # load train data 
-        data = pd.read_csv(train_name,sep=';')
-        X_train = data[data.columns[:-1]]
-        y_train = data[data.columns[-1]]
-        self.X = X_train.as_matrix()
-        self.y = y_train.as_matrix()
-        self.y = self.y.reshape(self.y.shape[0], 1)
-
+        self.X, self.y = load_data(train_name)
 
     def evaluate(self, individual):
 
