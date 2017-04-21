@@ -17,6 +17,23 @@ from crossover import Crossover
 import alg
 from dataset import load_data
 
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--trainset', help='filename of training set')
+parser.add_argument('--testset', help='filename of test set')
+parser.add_argument('--id', help='computation id')
+parser.add_argument('--checkpoint', help='checkpoint file to load the initial state from')
+
+args = parser.parse_args()
+trainset_name = args.trainset
+testset_name = args.testset 
+id = args.id
+if id is None:
+    id = "" 
+checkpoint_file = args.checkpoint
+
+
 creator.create("FitnessMax", base.Fitness, weights=(-1.0,))
 creator.create("Individual", Individual, fitness=creator.FitnessMax)
 
@@ -26,10 +43,12 @@ toolbox = base.Toolbox()
 toolbox.register("individual", initIndividual, creator.Individual)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
+# use multiple processors 
 pool = multiprocessing.Pool(5)
 toolbox.register("map", pool.map)
 
-fit = Fitness("data/CO-nrm-part1.train.csv")
+# register operators 
+fit = Fitness("data/"+trainset_name)
 mut = Mutation()
 cross = Crossover()
 
@@ -70,13 +89,10 @@ def main(id, checkpoint_name=None):
 
 if __name__ == "__main__":
 
-     
-    # first command line argument (if present) is the name
-    # of the checkpoint file 
-    if len(sys.argv) > 2:
-        pop, log, hof = main(sys.argv[1], sys.argv[2])
+    if checkpoint_file is None:
+        pop, log, hof = main(id)
     else:
-        pop, log, hof = main(sys.argv[1])
+        pop, log, hof = main(id, checkpoint_file)
     
     network = hof[0].createNetwork()
     network.summary()
@@ -84,8 +100,8 @@ if __name__ == "__main__":
     print( hof[0].fitness )
 
     # learn on the whole set 
-    X_train, y_train = load_data("data/CO-nrm-part1.train.csv")
-    X_test, y_test = load_data("data/CO-nrm-part1.test.csv")
+    X_train, y_train = load_data("data/"+trainset_name)
+    X_test, y_test = load_data("data/"+testset_name)
 
     def mean_sq_error(y1, y2):
         diff = y1 - y2
