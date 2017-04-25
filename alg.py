@@ -1,5 +1,7 @@
 import random
 import pickle
+import time
+import datetime 
 
 from deap import algorithms 
 
@@ -7,7 +9,9 @@ from deap import algorithms
 def myEASimple(population, start_gen, toolbox, cxpb, mutpb, ngen, 
                stats, halloffame, logbook, verbose, id=None):
 
+    total_time = datetime.timedelta(seconds=0) 
     for gen in range(start_gen, ngen):
+        start_time = datetime.datetime.now()
         population = algorithms.varAnd(population, toolbox, cxpb=cxpb, mutpb=mutpb)
 
         # Evaluate the individuals with an invalid fitness
@@ -34,5 +38,12 @@ def myEASimple(population, start_gen, toolbox, cxpb, mutpb, ngen,
             else:
                 cp_name = "checkpoint_ea_{}.pkl".format(id)
             pickle.dump(cp, open(cp_name, "wb"))
+            
+        gen_time = datetime.datetime.now() - start_time
+        total_time = total_time + gen_time
+        #print("Time ", total_time)
+        if total_time > datetime.timedelta(hours=1):
+            print("Time limit exceeded.")
+            break 
 
     return population, logbook
