@@ -42,7 +42,7 @@ def myEASimple(population, start_gen, toolbox, cxpb, mutpb, ngen,
         gen_time = datetime.datetime.now() - start_time
         total_time = total_time + gen_time
         #print("Time ", total_time)
-        if total_time > datetime.timedelta(hours=1):
+        if total_time > datetime.timedelta(hours=24):
             print("Time limit exceeded.")
             break 
 
