@@ -4,7 +4,7 @@ Search for an optimal KERAS architecture using genetic algorithms. Uses DEAP for
 
 ## Usage
 
-'''
+```
 main.py [-h] [--trainset TRAINSET] [--testset TESTSET] [--id ID]
                [--checkpoint CHECKPOINT]
 
@@ -15,4 +15,4 @@ optional arguments:
   --id ID               computation id
   --checkpoint CHECKPOINT
                         checkpoint file to load the initial state from
-'''
+```
