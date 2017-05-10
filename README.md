@@ -1,6 +1,7 @@
 # GAKeras
 
 Search for an optimal KERAS architecture using genetic algorithms. Uses DEAP for GA.
+Ready for sensor data sets (8 inputs, 1 output). 
 
 ## Usage
 
