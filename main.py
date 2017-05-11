@@ -116,18 +116,34 @@ if __name__ == "__main__":
         diff = y1 - y2
         E = 100 * sum(diff*diff) / len(y1)
         return E
+
+    def accuracy_score(y1, y2):
+        assert y1.shape == y2.shape
+        
+        y1_argmax = np.argmax(y1, axis=1)
+        y2_argmax = np.argmax(y2, axis=1)
+        score = sum(y1_argmax == y2_argmax)
+        return score / len(y1)
+        
+    
+    def error(y1, y2):
+        if Config.task_type == "classification":
+            return accuracy_score(y1, y2)
+        else:
+            return mean_sq_error(y1, y2)
+
     
     E_train, E_test = [], []  
     for _ in range(10):
         network = hof[0].createNetwork() 
         network.fit(X_train, y_train,
-                    batch_size=100, epochs=500, verbose=0)
+                    batch_size=Config.batch_size, epochs=Config.epochs, verbose=0)
 
         yy_train = network.predict(X_train)
-        E_train.append(mean_sq_error(yy_train, y_train)) 
+        E_train.append(error(yy_train, y_train)) 
         
         yy_test = network.predict(X_test)
-        E_test.append(mean_sq_error(yy_test, y_test))
+        E_test.append(error(yy_test, y_test))
 
         
     def print_stat(E, name):

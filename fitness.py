@@ -3,6 +3,7 @@ import numpy as np
 import sklearn
 from sklearn.cross_validation import KFold
 from dataset import load_data
+from config import Config
 
 class Fitness:
 
@@ -23,7 +24,7 @@ class Fitness:
                 
             model = individual.createNetwork()
             model.fit(X_train, y_train,
-                      batch_size=100, epochs=500, verbose=0)
+                      batch_size=Config.batch_size, epochs=Config.epochs, verbose=0)
             
             yy_test = model.predict(X_test)
             diff = y_test - yy_test
