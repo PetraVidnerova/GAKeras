@@ -16,6 +16,7 @@ from mutation import Mutation
 from crossover import Crossover
 import alg
 from dataset import load_data
+from config import Config
 
 import argparse
 
@@ -89,6 +90,15 @@ def main(id, checkpoint_name=None):
 
 if __name__ == "__main__":
 
+    # load the whole data 
+    X_train, y_train = load_data("data/"+trainset_name)
+    X_test, y_test = load_data("data/"+testset_name)
+    
+    # set cfg
+    Config.input_shape = X_train[0].shape 
+    Config.noutputs = y_train.shape[1]
+    print(Config.input_shape, Config.noutputs)
+    
     if checkpoint_file is None:
         pop, log, hof = main(id)
     else:
@@ -99,10 +109,9 @@ if __name__ == "__main__":
     print( hof[0] )
     print( hof[0].fitness )
 
-    # learn on the whole set 
-    X_train, y_train = load_data("data/"+trainset_name)
-    X_test, y_test = load_data("data/"+testset_name)
 
+    # learn on the whole set
+    #
     def mean_sq_error(y1, y2):
         diff = y1 - y2
         E = 100 * sum(diff*diff) / len(y1)
@@ -119,10 +128,6 @@ if __name__ == "__main__":
         
         yy_test = network.predict(X_test)
         E_test.append(mean_sq_error(yy_test, y_test))
-
-        #for train, test in zip(E_train, E_test):
-        # print(train, test)
-        # print("{:.3f} {:.3f}".format(train, test))
 
         
     def print_stat(E, name):

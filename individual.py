@@ -3,8 +3,8 @@ from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation
 from keras.optimizers import RMSprop
 
-INPUT_SHAPE = (8,)
-NOUTPUTS = 1 
+from config import Config
+
 
 MAX_LAYERS = 3
 MAX_LAYER_SIZE = 20
@@ -34,9 +34,11 @@ class Individual:
     """
     
     def __init__(self):
-        self.input_shape = INPUT_SHAPE
-        self.noutputs = NOUTPUTS
-    
+        self.input_shape = Config.input_shape
+        self.noutputs = Config.noutputs 
+        print(self.input_shape, self.noutputs)
+
+        
     def randomInit(self):
         self.layers = []
         num_layers = random.randint(1, MAX_LAYERS)
