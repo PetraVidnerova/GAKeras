@@ -1,6 +1,7 @@
 import random
 from utils import roulette
-from individual import Individual, Layer, MIN_LAYER_SIZE, MAX_LAYER_SIZE, DROPOUT, ACTIVATIONS 
+from individual import Individual, Layer
+from config import Config
 
 PROB_MUTATE_LAYER = 0.5
 PROB_ADD_LAYER = 0.25
@@ -22,7 +23,7 @@ class Mutation:
 
 
     def changeSize(self, layer):
-        layer.size = random.randint(MIN_LAYER_SIZE, MAX_LAYER_SIZE)
+        layer.size = random.randint(Config.MIN_LAYER_SIZE, Config.MAX_LAYER_SIZE)
 
     def addNeuron(self, layer):
         layer.size += 1
@@ -40,10 +41,10 @@ class Mutation:
 
 
     def mutateDropout(self, layer):
-        layer.dropout = random.choice(DROPOUT)
+        layer.dropout = random.choice(Config.DROPOUT)
         
     def mutateActivation(self, layer):
-        layer.activation = random.choice(ACTIVATIONS)
+        layer.activation = random.choice(Config.ACTIVATIONS)
 
     def randomInit(self, layer):
         layer.randomInit()

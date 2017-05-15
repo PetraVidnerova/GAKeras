@@ -6,11 +6,6 @@ from keras.optimizers import RMSprop
 from config import Config
 
 
-MAX_LAYERS = 3
-MAX_LAYER_SIZE = 20
-MIN_LAYER_SIZE = 10 
-DROPOUT = [ 0.0, 0.2, 0.3, 0.4 ] 
-ACTIVATIONS = [ 'relu', 'tanh', 'sigmoid', 'hard_sigmoid', 'linear' ] 
 
 class Layer:
     """ Specification of one layer.
@@ -20,9 +15,9 @@ class Layer:
         pass
 
     def randomInit(self):
-        self.size = random.randint(MIN_LAYER_SIZE, MAX_LAYER_SIZE)
-        self.dropout = random.choice(DROPOUT) 
-        self.activation = random.choice(ACTIVATIONS)  
+        self.size = random.randint(Config.MIN_LAYER_SIZE, Config.MAX_LAYER_SIZE)
+        self.dropout = random.choice(Config.DROPOUT) 
+        self.activation = random.choice(Config.ACTIVATIONS)  
         return self
 
     def __str__(self):
@@ -41,7 +36,7 @@ class Individual:
         
     def randomInit(self):
         self.layers = []
-        num_layers = random.randint(1, MAX_LAYERS)
+        num_layers = random.randint(1, Config.MAX_LAYERS)
         for l in range(num_layers):
             layer = Layer().randomInit() 
             self.layers.append(layer)
@@ -62,7 +57,7 @@ class Individual:
                 model.add(Dropout(l.dropout))
         model.add(Dense(self.noutputs)) 
             
-        model.compile(loss='mean_squared_error',
+        model.compile(loss=Config.loss,
                       optimizer=RMSprop())
         
         return model 
