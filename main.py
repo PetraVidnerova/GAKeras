@@ -17,6 +17,7 @@ from crossover import Crossover
 import alg
 from dataset import load_data
 from config import Config
+from utils import error
 
 import argparse
 
@@ -34,8 +35,10 @@ if id is None:
     id = "" 
 checkpoint_file = args.checkpoint
 
-
-creator.create("FitnessMax", base.Fitness, weights=(-1.0,))
+if Config.task_type == "classification":
+    creator.create("FitnessMax", base.Fitness, weights=(1.0,))
+else:
+    creator.create("FitnessMax", base.Fitness, weights=(-1.0,))
 creator.create("Individual", Individual, fitness=creator.FitnessMax)
 
 toolbox = base.Toolbox()
@@ -70,7 +73,7 @@ def main(id, checkpoint_name=None):
         logbook = cp["logbook"]
         random.setstate(cp["rndstate"])
     else:
-        pop = toolbox.population(n=10)
+        pop = toolbox.population(n=Config.pop_size)
         start_gen = 0
         hof = tools.HallOfFame(1)
         logbook = tools.Logbook()
@@ -81,7 +84,7 @@ def main(id, checkpoint_name=None):
     stats.register("min", np.min)
     stats.register("max", np.max)
     
-    pop, log = alg.myEASimple(pop, start_gen, toolbox, cxpb=0.6, mutpb=0.2, ngen=10, 
+    pop, log = alg.myEASimple(pop, start_gen, toolbox, cxpb=0.6, mutpb=0.2, ngen=Config.ngen, 
                               stats=stats, halloffame=hof, logbook=logbook, verbose=True,
                               id=id)
 
@@ -97,7 +100,7 @@ if __name__ == "__main__":
     # set cfg
     Config.input_shape = X_train[0].shape 
     Config.noutputs = y_train.shape[1]
-    print(Config.input_shape, Config.noutputs)
+    #    print(Config.input_shape, Config.noutputs)
     
     if checkpoint_file is None:
         pop, log, hof = main(id)
@@ -111,28 +114,7 @@ if __name__ == "__main__":
 
 
     # learn on the whole set
-    #
-    def mean_sq_error(y1, y2):
-        diff = y1 - y2
-        E = 100 * sum(diff*diff) / len(y1)
-        return E
-
-    def accuracy_score(y1, y2):
-        assert y1.shape == y2.shape
-        
-        y1_argmax = np.argmax(y1, axis=1)
-        y2_argmax = np.argmax(y2, axis=1)
-        score = sum(y1_argmax == y2_argmax)
-        return score / len(y1)
-        
-    
-    def error(y1, y2):
-        if Config.task_type == "classification":
-            return accuracy_score(y1, y2)
-        else:
-            return mean_sq_error(y1, y2)
-
-    
+    #    
     E_train, E_test = [], []  
     for _ in range(10):
         network = hof[0].createNetwork() 

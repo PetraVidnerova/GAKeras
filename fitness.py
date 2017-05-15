@@ -4,6 +4,7 @@ import sklearn
 from sklearn.cross_validation import KFold
 from dataset import load_data
 from config import Config
+from utils import error
 
 class Fitness:
 
@@ -13,7 +14,8 @@ class Fitness:
         self.X, self.y = load_data(train_name)
 
     def evaluate(self, individual):
-
+        #print(" *** evaluate *** ")
+        
         random.seed(42) 
         # perform KFold crossvalidation 
         kf = KFold(len(self.X), n_folds=5)
@@ -27,9 +29,9 @@ class Fitness:
                       batch_size=Config.batch_size, epochs=Config.epochs, verbose=0)
             
             yy_test = model.predict(X_test)
-            diff = y_test - yy_test
-            train_error = 100 * sum(diff * diff) / len(yy_test)
+            #diff = y_test - yy_test
+            #train_error = 100 * sum(diff * diff) / len(yy_test)
 
-            scores.append(train_error[0])
+            scores.append(error(y_test, yy_test))
             
         return np.mean(scores),
