@@ -35,6 +35,7 @@ if id is None:
     id = "" 
 checkpoint_file = args.checkpoint
 
+# for classification fitness is accuracy, for approximation fitness is error
 if Config.task_type == "classification":
     creator.create("FitnessMax", base.Fitness, weights=(1.0,))
 else:
