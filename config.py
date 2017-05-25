@@ -26,7 +26,7 @@ class CfgSensorsES:
     task_type = 'approximation'
 
     MU = 10
-    LAMBDA = 20
+    LAMBDA = 30
     ngen = 20
 
     MAX_LAYERS = 5
