@@ -25,9 +25,9 @@ class CfgSensorsES:
 
     task_type = 'approximation'
 
-    MU = 5
-    LAMBDA = 10
-    ngen = 10
+    MU = 10
+    LAMBDA = 20
+    ngen = 20
 
     MAX_LAYERS = 5
     MAX_LAYER_SIZE = 100
@@ -60,8 +60,32 @@ class CfgMnist:
     DROPOUT = [ 0.0, 0.2, 0.3, 0.4 ] 
     ACTIVATIONS = [ 'relu', 'tanh', 'sigmoid', 'hard_sigmoid', 'linear' ] 
 
-    
+class CfgMnistES:
 
+    batch_size = 128
+    epochs = 20 
+    #loss = 'categorical_crossentropy'
+    loss = 'mean_squared_error'
+    
+    task_type = "classification"
+
+    MU = 5
+    LAMBDA = 10
+    ngen = 10
+
+    SIZE_MIN_STRATEGY = 5
+    SIZE_MAX_STRATEGY = 50
+    DROPOUT_MIN_STRATEGY = 0.05
+    DROPOUT_MAX_STRATEGY = 0.2
+    
+    MAX_LAYERS = 5
+    MAX_LAYER_SIZE = 1000
+    MIN_LAYER_SIZE = 10 
+    DROPOUT = [ 0.0, 0.2, 0.3, 0.4 ] 
+    ACTIVATIONS = [ 'relu', 'tanh', 'sigmoid', 'hard_sigmoid', 'linear' ] 
+
+    
+#Config = CfgMnistES()
 Config = CfgSensorsES()  
 #Config = CfgMnist()
 

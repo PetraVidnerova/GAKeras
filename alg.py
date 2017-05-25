@@ -68,12 +68,15 @@ def myEAMuCommaLambda(population, startgen, toolbox, mu, lambda_, cxpb, mutpb, n
         logbook.header = ['gen', 'nevals'] + (stats.fields if stats else [])
 
     record = stats.compile(population) if stats is not None else {}
-    logbook.record(gen=0, nevals=len(invalid_ind), **record)
+    logbook.record(gen=startgen, nevals=len(invalid_ind), **record)
     if verbose:
         print(logbook.stream)
 
     # Begin the generational process
-    for gen in range(startgen, ngen):
+    total_time = datetime.timedelta(seconds=0) 
+    for gen in range(startgen+1, ngen):
+        start_time = datetime.datetime.now()
+        
         # Vary the population
         offspring = algorithms.varOr(population, toolbox, lambda_, cxpb, mutpb)
 
@@ -95,5 +98,23 @@ def myEAMuCommaLambda(population, startgen, toolbox, mu, lambda_, cxpb, mutpb, n
         logbook.record(gen=gen, nevals=len(invalid_ind), **record)
         if verbose:
             print(logbook.stream)
+
+        if gen % 1 == 0:
+            # Fill the dictionary using the dict(key=value[, ...]) constructor
+            cp = dict(population=population, generation=gen, halloffame=halloffame,
+                      logbook=logbook, rndstate=random.getstate())
+            if id is None:
+                cp_name = "checkpoint_es.pkl"
+            else:
+                cp_name = "checkpoint_es_{}.pkl".format(id)
+            pickle.dump(cp, open(cp_name, "wb"))
+
+        gen_time = datetime.datetime.now() - start_time
+        total_time = total_time + gen_time
+        if total_time > datetime.timedelta(hours=4*24):
+            print("Time limit exceeded.")
+            break 
+
+            
             
     return population, logbook
