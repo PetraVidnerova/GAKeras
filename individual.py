@@ -54,7 +54,11 @@ class Individual:
             model.add(Activation(l.activation))
             if l.dropout > 0:
                 model.add(Dropout(l.dropout))
-        model.add(Dense(self.noutputs)) 
+
+        # final part 
+        model.add(Dense(self.noutputs))
+        if Config.task_type == "classification":
+            model.add(Activation('softmax'))
             
         model.compile(loss=Config.loss,
                       optimizer=RMSprop())
