@@ -49,8 +49,8 @@ toolbox.register("individual", initIndividual, creator.Individual)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 # use multiple processors 
-pool = multiprocessing.Pool(5)
-toolbox.register("map", pool.map)
+#pool = multiprocessing.Pool(5)
+#toolbox.register("map", pool.map)
 
 # register operators 
 fit = Fitness("data/"+trainset_name)
@@ -130,7 +130,7 @@ if __name__ == "__main__":
 
         
     def print_stat(E, name):
-        print("E_{:6} avg={:.3f} std={:.3f}  min={:.3f} max={:.3f}".format(name,
+        print("E_{:6} avg={:.4f} std={:.4f}  min={:.4f} max={:.4f}".format(name,
                                                                            np.mean(E),
                                                                            np.std(E),
                                                                            np.min(E),
