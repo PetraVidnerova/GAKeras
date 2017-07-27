@@ -18,7 +18,7 @@ class Fitness:
         
         random.seed(42) 
         # perform KFold crossvalidation 
-        kf = KFold(len(self.X), n_folds=5)
+        kf = KFold(len(self.X), n_folds=3)
         scores = []
         for train, test in kf:   # train, test are indicies 
             X_train, X_test = self.X[train], self.X[test]
@@ -26,7 +26,7 @@ class Fitness:
                 
             model = individual.createNetwork()
             model.fit(X_train, y_train,
-                      batch_size=Config.batch_size, epochs=Config.epochs, verbose=0)
+                      batch_size=Config.batch_size, nb_epoch=Config.epochs, verbose=0)
             
             yy_test = model.predict(X_test)
             #diff = y_test - yy_test
