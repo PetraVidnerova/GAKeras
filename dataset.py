@@ -18,6 +18,18 @@ def load_data(filename):
 
         return X_train, Y_train
 
+    if filename == "data/mnist2d.train":
+        (X_train, y_train), (X_test, y_test) = mnist.load_data()
+
+        X_train = X_train.reshape(X_train.shape[0], 28, 28, 1)
+        X_train = X_train.astype('float32')
+        X_train /= 255
+
+        Y_train = np_utils.to_categorical(y_train, 10)
+
+        return X_train, Y_train
+        
+    
     if filename == "data/mnist.test":
         (X_train, y_train), (X_test, y_test) = mnist.load_data()
 
@@ -29,6 +41,18 @@ def load_data(filename):
 
         return X_test, Y_test 
     
+    if filename == "data/mnist2d.test":
+        (X_train, y_train), (X_test, y_test) = mnist.load_data()
+
+        X_test = X_test.reshape(10000, 28, 28, 1)
+        X_test = X_test.astype('float32')
+        X_test /= 255
+
+        Y_test = np_utils.to_categorical(y_test, 10)
+
+        return X_test, Y_test 
+    
+
     # load sensor data from csv file 
     data = pd.read_csv(filename, sep=';')
     X  = data[data.columns[:-1]].as_matrix()
