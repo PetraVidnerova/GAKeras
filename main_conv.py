@@ -14,7 +14,7 @@ from individual import initIndividual
 from convindividual import ConvIndividual
 from fitness import Fitness
 from mutation_conv import MutationConv
-from crossover_conv import CrossoverConv
+from crossover import CrossoverConv
 import alg
 from dataset import load_data
 from config import Config
