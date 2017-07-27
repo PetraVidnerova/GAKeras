@@ -6,7 +6,6 @@ from keras.optimizers import RMSprop
 from config import Config
 
 
-
 class Layer:
     """ Specification of one layer.
         Includes size, regularization, activaton. 
@@ -31,7 +30,7 @@ class Individual:
     def __init__(self):
         self.input_shape = Config.input_shape
         self.noutputs = Config.noutputs 
-        print(self.input_shape, self.noutputs)
+        #print(self.input_shape, self.noutputs)
 
         
     def randomInit(self):
