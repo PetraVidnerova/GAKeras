@@ -1,7 +1,7 @@
 import unittest
 from convindividual import ConvIndividual
-from mutation_conv import MutationConv
-from crossover_conv import CrossoverConv
+from mutation import MutationConv
+from crossover import CrossoverConv
 from fitness import Fitness
 from config import Config
 
@@ -27,7 +27,7 @@ class IndividualTest(unittest.TestCase):
         print( fit.evaluate(ind) )
 
 
-    def xtest_mutation(self):
+    def test_mutation(self):
         print(" *** test mutation *** ")
         Config.input_shape = (28,28,1)
         Config.noutputs = 10
@@ -39,7 +39,7 @@ class IndividualTest(unittest.TestCase):
         mut.mutate(ind)
         print(ind)
 
-    def test_crossover(self):
+    def xtest_crossover(self):
         print(" *** test crossover *** ")
         Config.input_shape = (28,28,1)
         Config.noutputs = 10

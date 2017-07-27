@@ -13,7 +13,7 @@ from deap import tools
 from individual import initIndividual
 from convindividual import ConvIndividual
 from fitness import Fitness
-from mutation_conv import MutationConv
+from mutation import MutationConv
 from crossover import CrossoverConv
 import alg
 from dataset import load_data
