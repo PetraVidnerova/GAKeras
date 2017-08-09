@@ -51,8 +51,8 @@ class CfgMnist:
     
     task_type = "classification"
 
-    pop_size = 5
-    ngen = 5
+    pop_size = 20
+    ngen = 300
 
     MAX_LAYERS = 5
     MAX_LAYER_SIZE = 300
@@ -100,8 +100,8 @@ class CfgMnistES:
     DROPOUT = [ 0.0, 0.2, 0.3, 0.4 ] 
     ACTIVATIONS = [ 'relu', 'tanh', 'sigmoid', 'hard_sigmoid', 'linear' ] 
 
-Config = CfgSensors()    
-#Config = CfgMnist()
+#Config = CfgSensors()    
+Config = CfgMnist()
 #Config = CfgSensorsES()  
 #Config = CfgMnist()
 
