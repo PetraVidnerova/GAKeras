@@ -15,7 +15,7 @@ from convindividual import ConvIndividual
 from fitness import Fitness
 from mutation import MutationConv
 from crossover import CrossoverConv
-import alg
+import paralg
 from dataset import load_data
 from config import Config
 from utils import error
@@ -86,7 +86,7 @@ def main(id, checkpoint_name=None):
     stats.register("min", np.min)
     stats.register("max", np.max)
     
-    pop, log = alg.myEASimple(pop, start_gen, toolbox, cxpb=0.6, mutpb=0.2, ngen=Config.ngen, 
+    pop, log = paralg.myAsyncEA(pop, start_gen, toolbox, cxpb=0.6, mutpb=0.2, ngen=Config.ngen, 
                               stats=stats, halloffame=hof, logbook=logbook, verbose=True,
                               id=id)
 
