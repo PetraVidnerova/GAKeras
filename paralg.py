@@ -8,7 +8,7 @@ from deap import algorithms
 
 from pool import Pool 
 
-PROCESSORS = 5
+PROCESSORS = 10
 
 def myAsyncEA(population, start_gen, toolbox, cxpb, mutpb, ngen,
               stats, halloffame, logbook, verbose, id=None):
@@ -91,7 +91,7 @@ def myAsyncEA(population, start_gen, toolbox, cxpb, mutpb, ngen,
         eval_time = datetime.datetime.now() - start_time
         total_time = total_time + eval_time
         #print("Time ", total_time)
-        if total_time > datetime.timedelta(minutes=5):
+        if total_time > datetime.timedelta(hours=8*24):
             print("Time limit exceeded.")
             break
         start_time = datetime.datetime.now() 
