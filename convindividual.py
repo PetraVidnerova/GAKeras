@@ -85,11 +85,11 @@ class ConvIndividual:
             if type(l) is ConvLayer:
                 if firstlayer:
                     model.add(Convolution2D(l.filters, l.kernel_size, l.kernel_size,
-                                            border_mode='valid',
+                                            border_mode='same', # let not the shape vanish
                                             input_shape=self.input_shape))
                     firstlayer = False
                 else:
-                    model.add(Convolution2D(l.filters, l.kernel_size, l.kernel_size))
+                    model.add(Convolution2D(l.filters, l.kernel_size, l.kernel_size, border_mode='same'))
                 model.add(Activation(l.activation))
                 
             elif type(l) is MaxPoolLayer:
@@ -98,7 +98,9 @@ class ConvIndividual:
                                            input_shape=self.input_shape))
                     firstlayer = False
                 else:
-                    model.add(MaxPooling2D(pool_size=(l.pool_size, l.pool_size)))
+                    # check if pooling is possible
+                    if model.layers[-1].output_shape[1] >= l.pool_size and model.layers[-1].output_shape[2] >= l.pool_size:
+                        model.add(MaxPooling2D(pool_size=(l.pool_size, l.pool_size)))
                     
             else:
                 raise TypeError("unknown type of layer") 

@@ -5,17 +5,51 @@ from crossover import CrossoverConv
 from fitness import Fitness
 from config import Config
 
+from keras.models import Sequential
+from keras.layers.core import Dense, Dropout, Activation, Flatten
+from keras.layers import Convolution2D, MaxPooling2D
+
+
 class IndividualTest(unittest.TestCase):
 
-    def xtest_create_individual(self):
+    def xtest_net(self):
+
+        input_shape = (28,28,1)
+
+        model = Sequential()
+        model.add(MaxPooling2D(pool_size=(3,3), input_shape = input_shape))
+        print("----->", model.layers[-1].output_shape)
+        model.add(MaxPooling2D(pool_size=(3,3)))
+        print("----->", model.layers[-1].output_shape)
+        model.add(MaxPooling2D(pool_size=(3,3)))
+        print("----->", model.layers[-1].output_shape)
+
+        if model.layers[-1].output_shape[1] >= 2 and model.layers[-1].output_shape[2] >= 2:
+            model.add(MaxPooling2D(pool_size=(2,2)))
+            print("----->", model.layers[-1].output_shape)
+        model.add(Flatten())
+        
+        #model.add(Convolution2D(20, 5, 5, border_mode='same'))
+        #model.add(MaxPooling2D(pool_size=(2,2)))
+        #model.add(MaxPooling2D(pool_size=(2,2)))
+        #model.add(MaxPooling2D(pool_size=(2,2)))
+        #model.add(Flatten())
+
+        model.summary()
+
+        
+    
+    def test_create_individual(self):
         Config.input_shape = (28,28,1)
         Config.noutputs = 10
-         
-        ind = ConvIndividual()
-        ind.randomInit()
-        print(ind)
-        net = ind.createNetwork()
-        net.summary()
+
+        for i in range(1000):
+            print("--------------------- start {} -------------------".format(i))
+            ind = ConvIndividual()
+            ind.randomInit()
+            print(ind)
+            net = ind.createNetwork()
+            net.summary()
 
     def xtest_evaluate(self):
         ind = ConvIndividual()
@@ -27,7 +61,7 @@ class IndividualTest(unittest.TestCase):
         print( fit.evaluate(ind) )
 
 
-    def test_mutation(self):
+    def xtest_mutation(self):
         print(" *** test mutation *** ")
         Config.input_shape = (28,28,1)
         Config.noutputs = 10
