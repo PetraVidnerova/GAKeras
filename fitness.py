@@ -1,10 +1,24 @@
 import random 
 import numpy as np 
+import pickle
 import sklearn
 from sklearn.cross_validation import KFold
 from dataset import load_data
 from config import Config
 from utils import error
+
+class Database:
+
+    def __init__(self):
+        self.data = []
+    
+    def insert(self, individual, fitness):
+        self.data.append((individual, fitness))
+        print("individual inserted")
+        
+    def save(self, name):
+        with open(name, "wb") as f:
+            pickle.dump(self.data, f)
 
 class Fitness:
 
@@ -12,9 +26,12 @@ class Fitness:
         
         # load train data 
         self.X, self.y = load_data(train_name)
-
+                
     def evaluate(self, individual):
         #print(" *** evaluate *** ")
+
+        #model = individual.createNetwork()
+        #return random.random(), 
         
         random.seed(42) 
         # perform KFold crossvalidation 
@@ -29,9 +46,8 @@ class Fitness:
                       batch_size=Config.batch_size, nb_epoch=Config.epochs, verbose=0)
             
             yy_test = model.predict(X_test)
-            #diff = y_test - yy_test
-            #train_error = 100 * sum(diff * diff) / len(yy_test)
-
             scores.append(error(y_test, yy_test))
             
-        return np.mean(scores),
+        fitness = np.mean(scores)
+            
+        return fitness,

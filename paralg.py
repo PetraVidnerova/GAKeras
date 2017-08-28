@@ -7,6 +7,7 @@ from operator import attrgetter
 from deap import algorithms 
 
 from pool import Pool 
+from fitness import Database
 
 PROCESSORS = 10
 
@@ -53,6 +54,8 @@ def myAsyncEA(population, start_gen, toolbox, cxpb, mutpb, ngen,
 
     pool = Pool(processors=PROCESSORS, evalfunc=eval_individual)    
 
+    db = Database()
+    
     if all([ind.fitness.valid for ind in population]):
         print("All individuals have valid fitness")
         # all inds are valid (loaded from checkpoint), generate some new to fill the pool 
@@ -72,7 +75,9 @@ def myAsyncEA(population, start_gen, toolbox, cxpb, mutpb, ngen,
 
         # get finished individual and add him to population 
         ind = pool.getAnswer()
-        assert ind.fitness.valid 
+        assert ind.fitness.valid
+        # add fitness and individual to the database
+        db.insert(ind, ind.fitness.values[0])
         population.append(ind)
         num_evals += 1
         
@@ -106,7 +111,9 @@ def myAsyncEA(population, start_gen, toolbox, cxpb, mutpb, ngen,
         pool.putQuerry(offspring)
 
 
-    pool.close() 
+    pool.close()
+    #    print(db.data)
+    db.save("database." + id + ".pkl")
     return population, logbook
 
 
