@@ -3,7 +3,7 @@
 class CfgSensors:
 
     batch_size = 100
-    epochs = 10 #500
+    epochs = 500
     loss = 'mean_squared_error'
 
     task_type = 'approximation'
