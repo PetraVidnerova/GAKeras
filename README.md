@@ -1,7 +1,9 @@
 # GAKeras
 
 Search for an optimal KERAS architecture using genetic algorithms. Uses DEAP for GA.
+
 Tested on air pollution prediction task and MNIST. 
+
 Edit config.py or use --config to set up the configuration. 
 
 
