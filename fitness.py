@@ -2,7 +2,7 @@ import random
 import numpy as np 
 import pickle
 import sklearn
-from sklearn.cross_validation import KFold
+from sklearn.model_selection import KFold
 from dataset import load_data
 from config import Config
 from utils import error
@@ -34,9 +34,9 @@ class Fitness:
         
         random.seed(42) 
         # perform KFold crossvalidation 
-        kf = KFold(len(self.X), n_folds=3)
+        kf = KFold(n_splits=3)
         scores = []
-        for train, test in kf:   # train, test are indicies 
+        for train, test in kf.split(self.X):   # train, test are indicies 
             X_train, X_test = self.X[train], self.X[test]
             y_train, y_test = self.y[train], self.y[test]
                 

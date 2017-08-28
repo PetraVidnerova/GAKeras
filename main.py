@@ -16,7 +16,7 @@ from mutation import Mutation
 from crossover import Crossover
 import alg
 from dataset import load_data
-from config import Config
+from config import Config, load_config
 from utils import error
 
 import argparse
@@ -26,6 +26,7 @@ parser.add_argument('--trainset', help='filename of training set')
 parser.add_argument('--testset', help='filename of test set')
 parser.add_argument('--id', help='computation id')
 parser.add_argument('--checkpoint', help='checkpoint file to load the initial state from')
+parser.add_argument('--config', help='json config filename')
 
 args = parser.parse_args()
 trainset_name = args.trainset
@@ -34,6 +35,9 @@ id = args.id
 if id is None:
     id = "" 
 checkpoint_file = args.checkpoint
+config_name = args.config
+if config_name is not None:
+    load_config(config_name)
 
 # for classification fitness is accuracy, for approximation fitness is error
 if Config.task_type == "classification":
@@ -49,8 +53,8 @@ toolbox.register("individual", initIndividual, creator.Individual)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 # use multiple processors 
-#pool = multiprocessing.Pool(5)
-#toolbox.register("map", pool.map)
+pool = multiprocessing.Pool(5)
+toolbox.register("map", pool.map)
 
 # register operators 
 fit = Fitness("data/"+trainset_name)
@@ -120,7 +124,7 @@ if __name__ == "__main__":
     for _ in range(10):
         network = hof[0].createNetwork() 
         network.fit(X_train, y_train,
-                    batch_size=Config.batch_size, epochs=Config.epochs, verbose=0)
+                    batch_size=Config.batch_size, nb_epoch=Config.epochs, verbose=0)
 
         yy_train = network.predict(X_train)
         E_train.append(error(yy_train, y_train)) 
