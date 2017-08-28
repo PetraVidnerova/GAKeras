@@ -12,12 +12,12 @@ from deap import tools
 
 from individual import initIndividual
 from convindividual import ConvIndividual
-from fitness import Fitness
+from fitness import Fitness, Database
 from mutation import MutationConv
 from crossover import CrossoverConv
 import paralg
 from dataset import load_data
-from config import Config
+from config import Config, load_config
 from utils import error
 
 import argparse
@@ -27,6 +27,7 @@ parser.add_argument('--trainset', help='filename of training set')
 parser.add_argument('--testset', help='filename of test set')
 parser.add_argument('--id', help='computation id')
 parser.add_argument('--checkpoint', help='checkpoint file to load the initial state from')
+parser.add_argument('--config', help='json config filename')
 
 args = parser.parse_args()
 trainset_name = args.trainset
@@ -35,6 +36,9 @@ id = args.id
 if id is None:
     id = "" 
 checkpoint_file = args.checkpoint
+config_name = args.config
+if config_name is not None:
+    load_config(config_name)
 
 # for classification fitness is accuracy, for approximation fitness is error
 if Config.task_type == "classification":
@@ -50,8 +54,8 @@ toolbox.register("individual", initIndividual, creator.Individual)
 toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
 # use multiple processors 
-pool = multiprocessing.Pool(5)
-toolbox.register("map", pool.map)
+#pool = multiprocessing.Pool(5)
+#toolbox.register("map", pool.map)
 
 # register operators 
 fit = Fitness("data/"+trainset_name)
@@ -114,7 +118,7 @@ if __name__ == "__main__":
     print( hof[0] )
     print( hof[0].fitness )
 
-
+    
     # learn on the whole set
     #    
     E_train, E_test = [], []  

@@ -1,4 +1,5 @@
 
+
 class CfgSensors:
 
     batch_size = 100
@@ -45,13 +46,13 @@ class CfgSensorsES:
 class CfgMnist:
 
     batch_size = 128
-    epochs = 10
+    epochs = 1
     loss = 'categorical_crossentropy'
     #loss = 'mean_squared_error'
     
     task_type = "classification"
 
-    pop_size = 20
+    pop_size = 10
     ngen = 300
 
     MAX_LAYERS = 5
@@ -105,3 +106,15 @@ Config = CfgMnist()
 #Config = CfgSensorsES()  
 #Config = CfgMnist()
 
+import json
+
+def load_config(name):
+
+    attrlist = [] 
+    with open(name,"r") as f:
+        attrlist = json.load(f)
+
+    for attr, value in attrlist:
+        setattr(Config, attr, value)
+
+        
