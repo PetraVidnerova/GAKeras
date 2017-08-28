@@ -14,7 +14,6 @@ class Database:
     
     def insert(self, individual, fitness):
         self.data.append((individual, fitness))
-        print("individual inserted")
         
     def save(self, name):
         with open(name, "wb") as f:
