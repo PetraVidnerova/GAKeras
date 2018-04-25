@@ -56,7 +56,6 @@ def load_data(filename):
     if filename == "data/cifar10.train":
         (X_train, y_train), (X_test, y_test) = cifar10.load_data()
         
-        X_train = X_train.reshape(X_train.shape[0], 28, 28, 1)
         X_train = X_train.astype('float32')
         X_train /= 255
 
@@ -67,7 +66,6 @@ def load_data(filename):
     if filename == "data/cifar10.test":
         (X_train, y_train), (X_test, y_test) = cifar10.load_data()
         
-        X_test = X_test.reshape(X_test.shape[0], 28, 28, 1)
         X_test = X_test.astype('float32')
         X_test /= 255
 
@@ -75,7 +73,13 @@ def load_data(filename):
 
         return X_test, Y_test 
        
+    # load fashion-mnist set
+    if filename == "data/fashion_mnist.train":
+        pass
 
+    if filename == "data/fashion_mnist.test":
+        pass
+    
     
     # load sensor data from csv file 
     data = pd.read_csv(filename, sep=';')
