@@ -42,7 +42,7 @@ class Fitness:
                 
             model = individual.createNetwork()
             model.fit(X_train, y_train,
-                      batch_size=Config.batch_size, nb_epoch=Config.epochs, verbose=0)
+                      batch_size=Config.batch_size, epochs=Config.epochs, verbose=0)
             
             yy_test = model.predict(X_test)
             scores.append(error(y_test, yy_test))

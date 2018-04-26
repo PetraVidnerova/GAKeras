@@ -1,7 +1,7 @@
 import random
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Activation, Flatten
-from keras.layers import Convolution2D, MaxPooling2D
+from keras.layers import Conv2D, MaxPooling2D
 from keras.optimizers import RMSprop
 from utils import roulette 
 from individual import Layer
@@ -84,12 +84,12 @@ class ConvIndividual:
         for l in self.conv_layers:
             if type(l) is ConvLayer:
                 if firstlayer:
-                    model.add(Convolution2D(l.filters, l.kernel_size, l.kernel_size,
-                                            border_mode='same', # let not the shape vanish
-                                            input_shape=self.input_shape))
+                    model.add(Conv2D(l.filters, (l.kernel_size, l.kernel_size),
+                                     padding='same', # let not the shape vanish
+                                     input_shape=self.input_shape))
                     firstlayer = False
                 else:
-                    model.add(Convolution2D(l.filters, l.kernel_size, l.kernel_size, border_mode='same'))
+                    model.add(Conv2D(l.filters, (l.kernel_size, l.kernel_size), padding='same'))
                 model.add(Activation(l.activation))
                 
             elif type(l) is MaxPoolLayer:
