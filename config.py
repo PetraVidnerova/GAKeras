@@ -1,4 +1,5 @@
-
+class Cfg:
+    pass 
 
 class CfgSensors:
 
@@ -106,15 +107,60 @@ Config = CfgMnist()
 #Config = CfgSensorsES()  
 #Config = CfgMnist()
 
-import json
+import configparser
+import re
 
+def is_int(s):
+    if re.fullmatch(r'[0-9]+', s):
+        return True
+    else:
+        return False
+
+def is_float(s):
+    if re.fullmatch(r'[0-9]+\.[0-9]+', s):
+        return True
+    else:
+        return False
+
+def is_list(s):
+    if re.fullmatch(r'\[.+\]', s):
+        return True
+    else:
+        return False
+
+def convert(s):
+    if is_int(s):
+        val = int(s)
+    elif is_float(s):
+        val = float(s)
+    elif is_list(s):
+        s = s.strip()
+        s = s.strip("[")
+        s = s.strip("]")
+        val = s.split(',')
+        newval = [] 
+        for v in val:
+            v = v.strip()
+            v = v.strip("'")
+            v = v.strip('"')
+            newval.append(convert(v))
+        val = newval
+    else:
+        val = s
+    return val
+    
+    
 def load_config(name):
 
-    attrlist = [] 
-    with open(name,"r") as f:
-        attrlist = json.load(f)
-
-    for attr, value in attrlist:
-        setattr(Config, attr, value)
-
-        
+    config = configparser.ConfigParser()
+    config.read(name)
+    
+    global Config
+    Config = Cfg()
+    
+    for sec in config.sections():
+        for key, val in config[sec].items():
+            val = convert(val)
+            setattr(Config, key.lower(), val)
+            setattr(Config, key.upper(), val)
+            
