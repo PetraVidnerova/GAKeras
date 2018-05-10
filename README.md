@@ -32,7 +32,7 @@ Use either 1D data or main_conv.py for 2D data.
 ```
 main.py --trainset mnist.train --testset mnist.test
 main_es.py --trainset mnist.train --testset mnist.test 
-main_conv.py --trainset mnist2d.train --testset mnist2d.test --config config_mnist.json
+main_conv.py --trainset mnist2d.train --testset mnist2d.test --config config_mnist.ini
 ```
 
 ## Citation
