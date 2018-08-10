@@ -59,7 +59,8 @@ class ConvIndividual:
     def __init__(self):
         self.input_shape = Config.input_shape
         self.noutputs = Config.noutputs
-
+        self.nparams = None
+        
     def randomInit(self):
         self.conv_layers = []
         num_conv_layers = random.randint(1, Config.MAX_CONV_LAYERS)
@@ -77,6 +78,7 @@ class ConvIndividual:
     def createNetwork(self):
 
         model = Sequential()
+
 
         firstlayer = True
 
@@ -120,6 +122,9 @@ class ConvIndividual:
         
         model.compile(loss=Config.loss,
                       optimizer=RMSprop())
+
+        self.nparams = model.count_params()
+                
         return model 
 
     
