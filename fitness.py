@@ -6,6 +6,8 @@ from sklearn.model_selection import KFold
 from dataset import load_data
 from config import Config
 from utils import error
+from keras import backend as K 
+
 
 class Database:
 
@@ -31,7 +33,7 @@ class Fitness:
 
         #model = individual.createNetwork()
         #return random.random(), 
-        
+         
         random.seed(42) 
         # perform KFold crossvalidation 
         kf = KFold(n_splits=3)
@@ -49,4 +51,7 @@ class Fitness:
             
         fitness = np.mean(scores)
             
+        # I try this to prevent memory leaks in nsga2-keras 
+        K.clear_session()
+
         return fitness,
