@@ -52,4 +52,14 @@ Aachen & Charleston: Technical University & CreateSpace Independent Publishing P
 2017 - (Hlaváčová, J.), s. 159-166. CEUR Workshop Proceedings, V-1885. ISBN 978-1974274741. ISSN 1613-0073.
 [ITAT 2017. Conference on Theory and Practice of Information Technologies - Applications and Theory/17./.
 Martinské hole (SK), 22.09.2017-26.09.2017]
-[http://ceur-ws.org/Vol-1885/159.pdf](http://ceur-ws.org/Vol-1885/159.pdf) 
+[http://ceur-ws.org/Vol-1885/159.pdf](http://ceur-ws.org/Vol-1885/159.pdf)
+
+**Vidnerová, Petra and Neruda, Roman**
+*Asynchronous Evolution of Convolutional Networks.*
+ITAT 2018: Information Technologies – Applications and
+Theory. Proceedings of the 18th conference ITAT 2018. Aachen:
+Technical University & CreateSpace Independent Publishing Platform,
+2018 - (Krajči, S.), s. 80-85. CEUR Workshop Proceedings, V-2203. ISSN
+1613-0073.  [ITAT 2018. Conference on Information Technologies –
+Applications and Theory /18./. Plejsy (SK), 21.09.2018-25.09.2018]
+[http://ceur-ws.org/Vol-2203/80.pdf](http://ceur-ws.org/Vol-2203/80.pdf)
