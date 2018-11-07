@@ -36,7 +36,7 @@ class Fitness:
          
         random.seed(42) 
         # perform KFold crossvalidation 
-        kf = KFold(n_splits=3)
+        kf = KFold(n_splits=5)
         scores = []
         for train, test in kf.split(self.X):   # train, test are indicies 
             X_train, X_test = self.X[train], self.X[test]
